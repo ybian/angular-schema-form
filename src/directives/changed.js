@@ -14,6 +14,12 @@ angular.module('schemaForm').directive('sfChanged', function() {
       var form = scope.$eval(attrs.sfChanged);
       //"form" is really guaranteed to be here since the decorator directive
       //waits for it. But best be sure.
+      if (scope.model.$digest) {
+        ctrl.$viewChangeListeners.push(function() {
+          scope.model.$digest();
+        });
+      }
+
       if (form && form.onChange) {
         ctrl.$viewChangeListeners.push(function() {
           if (angular.isFunction(form.onChange)) {
